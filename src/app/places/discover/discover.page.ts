@@ -6,10 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./discover.page.scss'],
 })
 export class DiscoverPage implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
+  constructor() {
+    console.log('discovered!');
   }
 
+  ngOnInit() {}
 }

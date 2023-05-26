@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Place } from '../../place';
+import { ActivatedRoute } from '@angular/router';
+import { NavController } from '@ionic/angular';
+import { PlacesService } from '../../places.service';
 
 @Component({
   selector: 'app-offer-bookings',
@@ -6,10 +10,27 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./offer-bookings.page.scss'],
 })
 export class OfferBookingsPage implements OnInit {
-
-  constructor() { }
+  place: Place = new Place('', '', '', '', 0);
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private placesService: PlacesService,
+    private navController: NavController
+  ) {}
 
   ngOnInit() {
+    this.activatedRoute.paramMap.subscribe((paramMap) => {
+      if (!paramMap.has('offerId')) {
+        //navigate away
+        this.navController.navigateBack(['places', 'offers']);
+        return;
+      }
+      const place = this.placesService.getPlace(paramMap.get('offerId')!);
+      if (place) {
+        this.place = place;
+      } else {
+        this.navController.navigateBack(['places', 'offers']);
+        return;
+      }
+    });
   }
-
 }

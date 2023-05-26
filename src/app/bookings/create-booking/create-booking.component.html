@@ -1,0 +1,19 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="primary">
+      <ion-button (click)="onCancel()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ place.title }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-text-center ion-padding">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">{{ place.title }}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <p>{{ place.description }}</p>
+  <ion-button color="primary" (click)="onBookPlace()">Book!</ion-button>
+</ion-content>

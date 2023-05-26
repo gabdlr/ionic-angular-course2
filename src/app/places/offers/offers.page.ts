@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PlacesService } from '../places.service';
 
 @Component({
   selector: 'app-offers',
@@ -6,10 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./offers.page.scss'],
 })
 export class OffersPage implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+  constructor(private placesService: PlacesService) {}
+  loadedOffers = this.placesService.places;
+  ngOnInit() {}
 }

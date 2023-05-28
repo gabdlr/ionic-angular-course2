@@ -25,14 +25,7 @@
             *ngFor="let offer of loadedOffers; let i = index"
             #slidinItem
           >
-            <ion-item>
-              <ion-thumbnail slot="start">
-                <ion-img [src]="offer.imageURL"></ion-img>
-              </ion-thumbnail>
-              <ion-label>
-                <h2>{{offer.title}}</h2>
-              </ion-label>
-            </ion-item>
+            <app-offer-item [offer]="offer" />
             <ion-item-options>
               <ion-item-option
                 color="secondary"

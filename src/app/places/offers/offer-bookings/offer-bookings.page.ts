@@ -10,7 +10,15 @@ import { PlacesService } from '../../places.service';
   styleUrls: ['./offer-bookings.page.scss'],
 })
 export class OfferBookingsPage implements OnInit {
-  place: Place = new Place('', '', '', '', 0);
+  place: Place = new Place(
+    '',
+    '',
+    '',
+    '',
+    0,
+    new Date(),
+    new Date(new Date().setDate(new Date().getDate() + 1))
+  );
   constructor(
     private activatedRoute: ActivatedRoute,
     private placesService: PlacesService,

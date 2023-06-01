@@ -1,0 +1,75 @@
+<form [formGroup]="form">
+  <ion-grid>
+    <ion-row>
+      <ion-col sizeSm="6" offsetSm="3">
+        <ion-item>
+          <ion-input
+            autocomplete
+            autocorrect
+            formControlName="title"
+            label="Title"
+            labelPlacement="floating"
+          ></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col sizeSm="6" offsetSm="3">
+        <ion-item>
+          <ion-textarea
+            formControlName="description"
+            label="Description"
+            labelPlacement="floating"
+            rows="3"
+          ></ion-textarea>
+        </ion-item>
+        <ion-item
+          *ngIf="
+            form.controls.description.invalid &&
+            form.controls.description.touched
+          "
+        >
+          <ion-label color="danger"
+            >Description must not be longer than 180 characters</ion-label
+          >
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col sizeSm="6" offsetSm="3">
+        <ion-item>
+          <ion-input
+            formControlName="price"
+            label="Price"
+            labelPlacement="floating"
+            type="number"
+          ></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col sizeSm="3" offsetSm="3">
+        <ion-item>
+          <ion-datetime
+            [min]="minDate"
+            formControlName="dateFrom"
+            presentation="date"
+          >
+            <ion-label slot="title">Available from</ion-label>
+          </ion-datetime>
+        </ion-item>
+      </ion-col>
+      <ion-col sizeSm="3">
+        <ion-item>
+          <ion-datetime
+            [min]="minDate"
+            formControlName="dateTo"
+            presentation="date"
+          >
+            <ion-label slot="title">Available to</ion-label>
+          </ion-datetime>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</form>

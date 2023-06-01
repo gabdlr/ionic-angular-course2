@@ -1,16 +1,85 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Authenticate</ion-title>
+    <ion-title>{{(isLoginMode ? 'login' : 'signup')|titlecase}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Authenticate</ion-title>
+      <ion-title size="large"
+        >{{(isLoginMode ? 'login' : 'signup')|titlecase}}</ion-title
+      >
     </ion-toolbar>
   </ion-header>
-  <ion-button (click)="onLogin()" class="ion-margin" color="primary"
-    >Login</ion-button
-  >
+  <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+    <ion-grid>
+      <ion-row>
+        <ion-col sizeMd="4" offsetMd="4">
+          <ion-list>
+            <ion-item>
+              <ion-input
+                email
+                label="Email"
+                labelPlacement="floating"
+                name="email"
+                ngModel
+                required
+                type="email"
+                #emailControl="ngModel"
+                fill="block"
+              ></ion-input>
+            </ion-item>
+            <ion-item
+              *ngIf="emailControl.invalid && emailControl.touched"
+              lines="none"
+              class="ion-no-margin"
+            >
+              <ion-label color="danger" class="ion-no-margin">
+                Should be a valid email address
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-input
+                label="Password"
+                labelPlacement="floating"
+                minlength="6"
+                name="password"
+                ngModel
+                required
+                type="password"
+                #passwordControl="ngModel"
+              ></ion-input>
+            </ion-item>
+            <ion-item
+              *ngIf="passwordControl.invalid && passwordControl.touched"
+              lines="none"
+              class="ion-no-margin"
+            >
+              <ion-label color="danger" class="ion-no-margin">
+                Should be a valid password
+              </ion-label>
+            </ion-item>
+          </ion-list>
+          <ion-button
+            class="ion-margin-vertical"
+            color="primary"
+            expand="block"
+            fill="clear"
+            type="button"
+            (click)="onSwitchAuthMode()"
+            >Switch to {{ isLoginMode ? 'signup' : 'login'}}</ion-button
+          >
+          <ion-button
+            (click)="onLogin()"
+            [disabled]="f.invalid"
+            color="primary"
+            expand="block"
+            type="submit"
+            >Login</ion-button
+          >
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
 </ion-content>

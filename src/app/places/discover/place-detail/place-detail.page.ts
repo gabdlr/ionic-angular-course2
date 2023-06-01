@@ -14,7 +14,15 @@ import { CreateBookingComponent } from '../../../bookings/create-booking/create-
   styleUrls: ['./place-detail.page.scss'],
 })
 export class PlaceDetailPage implements OnInit {
-  place: Place = new Place('', '', '', '', 0);
+  place: Place = new Place(
+    '',
+    '',
+    '',
+    '',
+    0,
+    new Date(),
+    new Date(new Date().setDate(new Date().getDate() + 1))
+  );
   constructor(
     private actionSheetControler: ActionSheetController,
     private activatedRoute: ActivatedRoute,
@@ -62,12 +70,12 @@ export class PlaceDetailPage implements OnInit {
     this.modalController
       .create({
         component: CreateBookingComponent,
-        componentProps: { place: this.place },
+        componentProps: { place: this.place, mode },
       })
       .then((modalEl) => {
         modalEl.present();
         return modalEl.onDidDismiss();
       })
-      .then();
+      .then(console.log);
   }
 }

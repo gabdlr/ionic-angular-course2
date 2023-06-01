@@ -14,6 +14,78 @@
       <ion-title size="large">{{ place.title }}</ion-title>
     </ion-toolbar>
   </ion-header>
-  <p>{{ place.description }}</p>
-  <ion-button color="primary" (click)="onBookPlace()">Book!</ion-button>
+  <form [formGroup]="form" (ngSubmit)="onBookPlace()">
+    <ion-grid>
+      <ion-row>
+        <ion-col sizeSm="6" offsetSm="3">
+          <ion-item>
+            <ion-input
+              formControlName="firstName"
+              label="First name"
+              labelPlacement="floating"
+              type="text"
+            ></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col sizeSm="6" offsetSm="3">
+          <ion-item>
+            <ion-input
+              formControlName="lastName"
+              label="Last name"
+              labelPlacement="floating"
+              type="text"
+            ></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col sizeSm="6" offsetSm="3">
+          <ion-item>
+            <ion-select
+              formControlName="guestsNumber"
+              label="Guests number"
+              labelPlacement="floating"
+            >
+              <ion-select-option value="1">1</ion-select-option>
+              <ion-select-option value="2">2</ion-select-option>
+              <ion-select-option value="3">3</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col sizeSm="6" offsetSm="3">
+          <ion-item>
+            <ion-datetime
+              [max]="place.availableTo.toISOString()"
+              [min]="place.availableFrom.toISOString()"
+              formControlName="dateFrom"
+              presentation="date"
+            ></ion-datetime>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col sizeSm="6" offsetSm="3">
+          <ion-item>
+            <ion-datetime
+              [max]="place.availableTo.toISOString()"
+              [min]="form.controls.dateFrom.value"
+              formControlName="dateTo"
+              presentation="date"
+            ></ion-datetime>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+  <ion-button
+    (click)="onBookPlace()"
+    [disabled]="form.invalid || datesValidation()"
+    color="primary"
+    type="submit"
+    >Book!</ion-button
+  >
 </ion-content>

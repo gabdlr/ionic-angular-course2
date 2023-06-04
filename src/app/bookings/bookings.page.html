@@ -1,6 +1,9 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>Bookings</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="discover"></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -11,8 +14,12 @@
     </ion-toolbar>
   </ion-header>
   <ion-grid>
-    <ion-row>
-      <ion-col size-md="6" offset-md="3">
+    <ion-row *ngIf="loadedBookings$|async as loadedBookings">
+      <ion-col
+        *ngIf="loadedBookings.length > 0; else noBookings"
+        offset-md="3"
+        size-md="6"
+      >
         <ion-list>
           <ion-item-sliding *ngFor="let booking of loadedBookings">
             <ion-item>
@@ -23,8 +30,8 @@
             </ion-item>
             <ion-item-options>
               <ion-item-option
-                color="danger"
                 (click)="onCancelBooking(booking.id)"
+                color="danger"
               >
                 <ion-icon name="trash" slot="icon-only"></ion-icon>
               </ion-item-option>
@@ -35,3 +42,8 @@
     </ion-row>
   </ion-grid>
 </ion-content>
+<ng-template #noBookings>
+  <ion-col class="ion-text-center" offset-md="3" size-md="6">
+    <p>You have no bookings yet!</p>
+  </ion-col>
+</ng-template>

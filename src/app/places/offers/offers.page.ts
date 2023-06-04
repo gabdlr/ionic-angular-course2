@@ -8,9 +8,8 @@ import { PlacesService } from '../places.service';
 })
 export class OffersPage implements OnInit {
   constructor(private placesService: PlacesService) {}
-  loadedOffers = this.placesService.places;
+  loadedOffers$ = this.placesService.places;
+
   ngOnInit() {}
-  onEdit(id: string) {
-    console.log(id);
-  }
+  onEdit(id: string) {}
 }

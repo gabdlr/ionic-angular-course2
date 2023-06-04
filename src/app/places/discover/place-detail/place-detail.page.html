@@ -1,19 +1,37 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="discover"></ion-back-button>
-    </ion-buttons>
-    <ion-title>{{place.title}}</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
+<ng-container *ngIf="place$|async as place">
+  <ion-header [translucent]="true">
     <ion-toolbar>
-      <ion-title size="large">{{place.title}}</ion-title>
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="discover"></ion-back-button>
+      </ion-buttons>
+      <ion-title>{{place.title}}</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-button (click)="onBookPlace()" class="ion-margin" color="primary"
-    >Book</ion-button
-  >
-</ion-content>
+
+  <ion-content [fullscreen]="true">
+    <ion-header collapse="condense">
+      <ion-toolbar>
+        <ion-title size="large">{{place.title}}</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-grid class="ion-no-padding">
+      <ion-row>
+        <ion-col sizeSm="6" offsetSm="3">
+          <ion-img [src]="place.imageURL"></ion-img>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-grid>
+      <ion-row>
+        <ion-col sizeSm="6" offsetSm="3">
+          <p>{{place.description}}</p>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="userId !== place.userId">
+        <ion-col sizeMd="6" offsetSm="3" class="ion-text-center">
+          <ion-button (click)="onBookPlace()" color="primary">Book</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-content>
+</ng-container>

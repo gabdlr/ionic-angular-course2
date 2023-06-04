@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PlacesService } from '../places.service';
 import { Place } from '../place';
 import { SegmentChangeEventDetail } from '@ionic/angular';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-discover',
@@ -9,12 +10,16 @@ import { SegmentChangeEventDetail } from '@ionic/angular';
   styleUrls: ['./discover.page.scss'],
 })
 export class DiscoverPage implements OnInit {
-  loadedPlaces: Place[];
+  loadedPlaces$: Observable<Place[]>;
+  filterPlacesBy: 'all' | 'bookable' = 'all';
   constructor(private placesService: PlacesService) {
-    this.loadedPlaces = this.placesService.places;
+    this.loadedPlaces$ = this.placesService.places;
   }
   ngOnInit() {}
+
   onFilterUpdate(event: Event) {
     const castedEvent = <CustomEvent<SegmentChangeEventDetail>>event;
+    const selectedFilter = castedEvent.detail.value as 'all' | 'bookable';
+    this.filterPlacesBy = selectedFilter;
   }
 }

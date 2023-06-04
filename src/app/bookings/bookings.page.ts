@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BookingsService } from './bookings.service';
 import { Booking } from './booking.model';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-bookings',
@@ -8,9 +9,9 @@ import { Booking } from './booking.model';
   styleUrls: ['./bookings.page.scss'],
 })
 export class BookingsPage implements OnInit {
-  loadedBookings: Booking[];
+  loadedBookings$: Observable<Booking[]>;
   constructor(private bookingsService: BookingsService) {
-    this.loadedBookings = this.bookingsService.bookings;
+    this.loadedBookings$ = this.bookingsService.bookings;
   }
 
   ngOnInit() {}

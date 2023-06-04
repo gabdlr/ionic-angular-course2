@@ -8,28 +8,39 @@ import {
 import { PlacesService } from '../../places.service';
 import { Place } from '../../place';
 import { CreateBookingComponent } from '../../../bookings/create-booking/create-booking.component';
+import { Observable, of } from 'rxjs';
+import { BookingsService } from '../../../bookings/bookings.service';
+import { AuthService } from '../../../auth/auth.service';
 @Component({
   selector: 'app-place-detail',
   templateUrl: './place-detail.page.html',
   styleUrls: ['./place-detail.page.scss'],
 })
 export class PlaceDetailPage implements OnInit {
-  place: Place = new Place(
-    '',
-    '',
-    '',
-    '',
-    0,
-    new Date(),
-    new Date(new Date().setDate(new Date().getDate() + 1))
+  place$ = of(
+    new Place(
+      '',
+      '',
+      '',
+      '',
+      0,
+      new Date(),
+      new Date(new Date().setDate(new Date().getDate() + 1)),
+      ''
+    )
   );
+  userId: string;
   constructor(
     private actionSheetControler: ActionSheetController,
     private activatedRoute: ActivatedRoute,
+    private authService: AuthService,
+    private bookingsService: BookingsService,
     private modalController: ModalController,
     private navController: NavController,
     private placesService: PlacesService
-  ) {}
+  ) {
+    this.userId = this.authService.userId;
+  }
 
   ngOnInit() {
     this.activatedRoute.paramMap.subscribe((paramMap) => {
@@ -38,7 +49,7 @@ export class PlaceDetailPage implements OnInit {
       }
       const place = this.placesService.getPlace(paramMap.get('placeId')!);
       if (place) {
-        this.place = place;
+        this.place$ = place as Observable<Place>;
       } else {
         this.navController.navigateBack(['']);
       }
@@ -70,12 +81,32 @@ export class PlaceDetailPage implements OnInit {
     this.modalController
       .create({
         component: CreateBookingComponent,
-        componentProps: { place: this.place, mode },
+        componentProps: { place$: this.place$, mode },
       })
       .then((modalEl) => {
         modalEl.present();
         return modalEl.onDidDismiss();
       })
-      .then(console.log);
+      .then(
+        (value: {
+          data?: {
+            booking: {
+              dateFrom: string;
+              dateTo: string;
+              firstName: string;
+              guestsNumber: string;
+              lastName: string;
+            };
+            place: Place;
+          };
+          role?: string;
+        }) => {
+          const booking = value.data?.booking;
+          const place = value.data?.place;
+          if (booking != null && place != null) {
+            this.bookingsService.addBooking(booking, place);
+          }
+        }
+      );
   }
 }

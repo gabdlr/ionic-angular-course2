@@ -1,24 +1,26 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button
-        defaultHref="/places/offers/offer-bookings/{{place.id}}"
-      ></ion-back-button>
-    </ion-buttons>
-    <ion-buttons slot="primary">
-      <ion-button (click)="onUpdateOffer()" [disabled]="form.invalid">
-        <ion-icon name="checkmark" slot="icon-only"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <ion-title>Edit offer</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
+<ng-container *ngIf="place$|async as place">
+  <ion-header [translucent]="true">
     <ion-toolbar>
-      <ion-title size="large">Edit offer</ion-title>
+      <ion-buttons slot="start">
+        <ion-back-button
+          defaultHref="/places/offers/offer-bookings/{{place.id}}"
+        ></ion-back-button>
+      </ion-buttons>
+      <ion-buttons slot="primary">
+        <ion-button (click)="onUpdateOffer()" [disabled]="form.invalid">
+          <ion-icon name="checkmark" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-title>Edit offer</ion-title>
     </ion-toolbar>
   </ion-header>
-  <app-offer-form [form]="form"></app-offer-form>
-</ion-content>
+
+  <ion-content [fullscreen]="true">
+    <ion-header collapse="condense">
+      <ion-toolbar>
+        <ion-title size="large">Edit offer</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <app-offer-form [form]="form"></app-offer-form>
+  </ion-content>
+</ng-container>

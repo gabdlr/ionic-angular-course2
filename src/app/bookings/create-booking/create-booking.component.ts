@@ -1,14 +1,15 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Place } from '../../places/place';
-import { ModalController } from '@ionic/angular';
+import { ModalController, ViewWillEnter } from '@ionic/angular';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Observable, of, take } from 'rxjs';
 
 @Component({
   selector: 'app-create-booking',
   templateUrl: './create-booking.component.html',
   styleUrls: ['./create-booking.component.scss'],
 })
-export class CreateBookingComponent implements OnInit {
+export class CreateBookingComponent implements OnInit, ViewWillEnter {
   form = new FormGroup({
     firstName: new FormControl<null | string>(null, {
       updateOn: 'blur',
@@ -22,55 +23,63 @@ export class CreateBookingComponent implements OnInit {
       updateOn: 'blur',
       validators: [Validators.required],
     }),
-    dateFrom: new FormControl<null | string>(null, {
+    dateFrom: new FormControl<null | string>(new Date().toISOString(), {
       updateOn: 'change',
       validators: [Validators.required],
     }),
-    dateTo: new FormControl<null | string>(null, {
-      updateOn: 'change',
-      validators: [Validators.required],
-    }),
+    dateTo: new FormControl<null | string>(
+      new Date(new Date().setDate(new Date().getDate() + 1)).toISOString(),
+      {
+        updateOn: 'change',
+        validators: [Validators.required],
+      }
+    ),
   });
-  @Input() place: Place = new Place(
-    '',
-    '',
-    '',
-    '',
-    0,
-    new Date(),
-    new Date(new Date().setDate(new Date().getDate() + 1))
+  place?: Place;
+  @Input() place$: Observable<Place> = of(
+    new Place(
+      '',
+      '',
+      '',
+      '',
+      0,
+      new Date(),
+      new Date(new Date().setDate(new Date().getDate() + 1)),
+      ''
+    )
   );
   @Input() mode: 'select' | 'random' = 'select';
-  constructor(private modalController: ModalController) {
-    this.form.patchValue({ dateFrom: this.place.availableFrom.toISOString() });
-  }
+  constructor(private modalController: ModalController) {}
 
-  ngOnInit() {
-    if (this.mode === 'random') {
-      const availableFrom = this.place.availableFrom;
-      const availableTo = this.place.availableTo;
-      const randomStart = new Date(
-        availableFrom.getTime() +
-          Math.random() *
-            (availableTo.getTime() +
-              7 * 24 * 60 * 60 * 1000 -
-              availableFrom.getTime())
-      );
-      const randomEnd = new Date(
-        randomStart.getTime() + (Math.random() * 5 + 1) * 24 * 60 * 60 * 1000
-      );
+  ngOnInit() {}
 
-      this.form.patchValue({
-        dateFrom: randomStart.toISOString(),
-        dateTo: randomEnd.toISOString(),
-      });
-    }
-  }
-  onBookPlace() {
-    this.modalController.dismiss(this.form.value, 'confirm');
-  }
-  onCancel() {
-    this.modalController.dismiss(null, 'cancel');
+  ionViewWillEnter(): void {
+    this.place$.pipe(take(1)).subscribe({
+      next: (place) => {
+        this.place = place;
+        this.form.patchValue({ dateFrom: place.availableFrom.toISOString() });
+        if (this.mode === 'random') {
+          const availableFrom = place.availableFrom;
+          const availableTo = place.availableTo;
+          const randomStart = new Date(
+            availableFrom.getTime() +
+              Math.random() *
+                (availableTo.getTime() +
+                  7 * 24 * 60 * 60 * 1000 -
+                  availableFrom.getTime())
+          );
+          const randomEnd = new Date(
+            randomStart.getTime() +
+              (Math.random() * 5 + 1) * 24 * 60 * 60 * 1000
+          );
+
+          this.form.patchValue({
+            dateFrom: randomStart.toISOString(),
+            dateTo: randomEnd.toISOString(),
+          });
+        }
+      },
+    });
   }
 
   datesValidation() {
@@ -80,5 +89,16 @@ export class CreateBookingComponent implements OnInit {
       return dateFrom.getTime() > dateTo.getTime();
     }
     return true;
+  }
+
+  onBookPlace() {
+    if (this.place != null) {
+      const data = { booking: this.form.value, place: this.place };
+      this.modalController.dismiss(data, 'confirm');
+    }
+  }
+
+  onCancel() {
+    this.modalController.dismiss(null, 'cancel');
   }
 }

@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  firebaseURL: 'https://ng-ionic-app-default-rtdb.firebaseio.com/',
 };

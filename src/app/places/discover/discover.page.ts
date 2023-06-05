@@ -15,6 +15,9 @@ export class DiscoverPage implements OnInit {
   constructor(private placesService: PlacesService) {
     this.loadedPlaces$ = this.placesService.places;
   }
+  ionViewWillEnter() {
+    this.placesService.fetchPlaces();
+  }
   ngOnInit() {}
 
   onFilterUpdate(event: Event) {

@@ -4,7 +4,7 @@ import { Place } from '../../place';
 import { PlacesService } from '../../places.service';
 import { NavController } from '@ionic/angular';
 import { OffersService } from '../offers.service';
-import { Observable, of, take } from 'rxjs';
+import { EMPTY, catchError, of, take } from 'rxjs';
 
 @Component({
   selector: 'app-edit-offer',
@@ -39,9 +39,14 @@ export class EditOfferPage implements OnInit {
         this.navController.navigateBack(['places', 'offers']);
         return;
       }
-      const place = this.placesService.getPlace(paramsMap.get('offerId')!);
+      const place = this.placesService.getPlace(paramsMap.get('offerId')!).pipe(
+        catchError((err) => {
+          this.navController.navigateBack(['places', 'offers']);
+          return EMPTY;
+        })
+      );
       if (place) {
-        this.place$ = place as Observable<Place>;
+        this.place$ = place;
         this.place$.pipe(take(1)).subscribe({
           next: (place) => {
             this.place = place;
@@ -54,8 +59,6 @@ export class EditOfferPage implements OnInit {
             });
           },
         });
-      } else {
-        this.navController.navigateBack(['places', 'offers']);
       }
     });
   }
@@ -74,9 +77,8 @@ export class EditOfferPage implements OnInit {
       this.place.description =
         this.form.value.description ?? this.place.description;
       this.place.price = this.form.value.price ?? this.place.price;
-
       this.placesService.updatePlace(this.place);
-      this.navController.pop();
+      this.navController.navigateBack(['places', 'offers']);
     }
   }
 }

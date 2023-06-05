@@ -2,9 +2,7 @@
   <ion-header [translucent]="true">
     <ion-toolbar>
       <ion-buttons slot="start">
-        <ion-back-button
-          defaultHref="/places/offers/offer-bookings/{{place.id}}"
-        ></ion-back-button>
+        <ion-back-button defaultHref="/places/offers"></ion-back-button>
       </ion-buttons>
       <ion-buttons slot="primary">
         <ion-button (click)="onUpdateOffer()" [disabled]="form.invalid">

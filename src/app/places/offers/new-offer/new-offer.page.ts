@@ -28,7 +28,7 @@ export class NewOfferPage implements OnInit {
 
   onCreateOffer() {
     const place = new Place(
-      Math.random().toString(),
+      null,
       this.form.value.title ?? '',
       this.form.value.description ?? '',
       imageURL,

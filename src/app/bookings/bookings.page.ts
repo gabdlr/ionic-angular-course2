@@ -14,7 +14,9 @@ export class BookingsPage implements OnInit {
     this.loadedBookings$ = this.bookingsService.bookings;
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.bookingsService.fetchBookings();
+  }
   onCancelBooking(id: string) {
     this.bookingsService.cancelBooking(id);
   }

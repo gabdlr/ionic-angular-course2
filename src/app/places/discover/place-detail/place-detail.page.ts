@@ -8,7 +8,7 @@ import {
 import { PlacesService } from '../../places.service';
 import { Place } from '../../place';
 import { CreateBookingComponent } from '../../../bookings/create-booking/create-booking.component';
-import { Observable, of } from 'rxjs';
+import { EMPTY, Observable, catchError, of } from 'rxjs';
 import { BookingsService } from '../../../bookings/bookings.service';
 import { AuthService } from '../../../auth/auth.service';
 @Component({
@@ -47,7 +47,12 @@ export class PlaceDetailPage implements OnInit {
       if (!paramMap.has('placeId')) {
         this.navController.navigateBack(['']);
       }
-      const place = this.placesService.getPlace(paramMap.get('placeId')!);
+      const place = this.placesService.getPlace(paramMap.get('placeId')!).pipe(
+        catchError((err) => {
+          this.navController.navigateBack(['/']);
+          return EMPTY;
+        })
+      );
       if (place) {
         this.place$ = place as Observable<Place>;
       } else {

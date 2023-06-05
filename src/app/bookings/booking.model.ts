@@ -4,7 +4,7 @@ export class Booking {
     public bookedTo: Date,
     public firstName: string,
     public guestNumber: number,
-    public id: string,
+    public id: string | null,
     public lastName: string,
     public placeId: string,
     public placeImage: string,

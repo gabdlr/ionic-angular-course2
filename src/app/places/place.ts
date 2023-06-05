@@ -1,6 +1,6 @@
 export class Place {
   constructor(
-    public id: string,
+    public id: string | null,
     public title: string,
     public description: string,
     public imageURL: string,

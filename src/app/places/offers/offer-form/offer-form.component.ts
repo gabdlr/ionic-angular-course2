@@ -2,9 +2,10 @@ import { NgIf } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
+import { SharedModule } from '../../../shared/shared.module';
 
 @Component({
-  imports: [IonicModule, ReactiveFormsModule, NgIf],
+  imports: [IonicModule, ReactiveFormsModule, NgIf, SharedModule],
   selector: 'app-offer-form',
   standalone: true,
   templateUrl: './offer-form.component.html',

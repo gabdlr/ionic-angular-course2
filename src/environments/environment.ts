@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  mapsAPIKey: 'AIzaSyB2wlphSvhutDXtPLdTEYGTxBNOOTfXMBQ',
   firebaseURL: 'https://ng-ionic-app-default-rtdb.firebaseio.com/',
 };
 

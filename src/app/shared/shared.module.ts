@@ -8,5 +8,6 @@ import { IonicModule } from '@ionic/angular';
   declarations: [LocationPickerComponent, MapModalComponent],
   imports: [CommonModule, IonicModule],
   exports: [LocationPickerComponent, MapModalComponent],
+  providers: [{ provide: Window, useValue: window }],
 })
 export class SharedModule {}

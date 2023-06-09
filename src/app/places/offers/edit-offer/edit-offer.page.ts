@@ -77,6 +77,7 @@ export class EditOfferPage implements OnInit {
       this.place.description =
         this.form.value.description ?? this.place.description;
       this.place.price = this.form.value.price ?? this.place.price;
+      this.place.placeLocation = this.form.value.location ?? null;
       this.placesService.updatePlace(this.place);
       this.navController.navigateBack(['places', 'offers']);
     }

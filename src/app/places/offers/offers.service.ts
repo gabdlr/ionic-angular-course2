@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { PlaceLocation } from '../location.model';
 
 @Injectable()
 export class OffersService {
@@ -22,6 +23,10 @@ export class OffersService {
       validators: [Validators.required],
     }),
     dateTo: new FormControl<null | string>(null, {
+      updateOn: 'blur',
+      validators: [Validators.required],
+    }),
+    location: new FormControl<null | PlaceLocation>(null, {
       updateOn: 'blur',
       validators: [Validators.required],
     }),

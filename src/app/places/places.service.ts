@@ -1,17 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Place } from './place';
-import {
-  BehaviorSubject,
-  EMPTY,
-  finalize,
-  map,
-  of,
-  switchMap,
-  tap,
-} from 'rxjs';
+import { BehaviorSubject, EMPTY, finalize, map, switchMap, tap } from 'rxjs';
 import { LoadingController } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import { PlaceLocation } from './location.model';
 interface PlaceDTO {
   title: string;
   description: string;
@@ -20,6 +13,7 @@ interface PlaceDTO {
   availableFrom: string;
   availableTo: string;
   userId: string;
+  placeLocation?: PlaceLocation;
 }
 @Injectable({
   providedIn: 'root',
@@ -74,7 +68,8 @@ export class PlacesService {
               placeObj.price,
               new Date(placeObj.availableFrom),
               new Date(placeObj.availableTo),
-              placeObj.userId
+              placeObj.userId,
+              placeObj.placeLocation
             );
             places.push(place);
           }
@@ -98,7 +93,8 @@ export class PlacesService {
             placeDTO.price,
             new Date(placeDTO.availableFrom),
             new Date(placeDTO.availableTo),
-            placeDTO.userId
+            placeDTO.userId,
+            placeDTO.placeLocation
           );
           return place;
         })
@@ -122,11 +118,10 @@ export class PlacesService {
           switchMap(() => {
             this.fetchPlaces();
             return EMPTY;
-          })
+          }),
+          finalize(() => el.dismiss())
         )
-        .subscribe(() => {
-          el.dismiss();
-        });
+        .subscribe();
     });
   }
 }

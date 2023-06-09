@@ -8,9 +8,10 @@ import {
 import { PlacesService } from '../../places.service';
 import { Place } from '../../place';
 import { CreateBookingComponent } from '../../../bookings/create-booking/create-booking.component';
-import { EMPTY, Observable, catchError, of } from 'rxjs';
+import { EMPTY, Observable, catchError, of, take } from 'rxjs';
 import { BookingsService } from '../../../bookings/bookings.service';
 import { AuthService } from '../../../auth/auth.service';
+import { MapModalComponent } from '../../../shared/map-modal/map-modal.component';
 @Component({
   selector: 'app-place-detail',
   templateUrl: './place-detail.page.html',
@@ -26,7 +27,8 @@ export class PlaceDetailPage implements OnInit {
       0,
       new Date(),
       new Date(new Date().setDate(new Date().getDate() + 1)),
-      ''
+      '',
+      null
     )
   );
   userId: string;
@@ -80,6 +82,28 @@ export class PlaceDetailPage implements OnInit {
       .then((actionSheetElement) => {
         actionSheetElement.present();
       });
+  }
+
+  onShowMap() {
+    this.place$.pipe(take(1)).subscribe((place) => {
+      let center: unknown;
+      if (place.placeLocation?.lat && place.placeLocation.lng) {
+        center = { lat: place.placeLocation.lat, lng: place.placeLocation.lng };
+      } else {
+        center = null;
+      }
+      this.modalController
+        .create({
+          component: MapModalComponent,
+          componentProps: {
+            center,
+            selectable: false,
+            closeButtonText: 'Close',
+            title: place.placeLocation?.address ?? '',
+          },
+        })
+        .then((el) => el.present());
+    });
   }
 
   openBookingModal(mode: 'select' | 'random') {

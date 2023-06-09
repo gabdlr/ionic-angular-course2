@@ -35,7 +35,8 @@ export class NewOfferPage implements OnInit {
       this.form.value.price ?? 0,
       new Date(this.form.value.dateFrom ?? new Date().toString()),
       new Date(this.form.value.dateTo ?? new Date().toString()),
-      this.authService.userId
+      this.authService.userId,
+      this.form.value.location
     );
     this.placesService.addPlace(place);
     this.navController.pop();

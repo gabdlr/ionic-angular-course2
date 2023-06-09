@@ -3,6 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { SharedModule } from '../../../shared/shared.module';
+import { PlaceLocation } from '../../location.model';
 
 @Component({
   imports: [IonicModule, ReactiveFormsModule, NgIf, SharedModule],
@@ -19,8 +20,12 @@ export class OfferFormComponent implements OnInit {
     price: FormControl<null | number>;
     dateFrom: FormControl<null | string>;
     dateTo: FormControl<null | string>;
+    location: FormControl<null | PlaceLocation>;
   }>;
   constructor() {}
 
   ngOnInit() {}
+  onLocationPicked(location: PlaceLocation) {
+    this.form.patchValue({ location });
+  }
 }

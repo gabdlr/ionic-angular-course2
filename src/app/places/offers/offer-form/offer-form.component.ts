@@ -25,6 +25,7 @@ export class OfferFormComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {}
+  onImagePicked(image: string) {}
   onLocationPicked(location: PlaceLocation) {
     this.form.patchValue({ location });
   }

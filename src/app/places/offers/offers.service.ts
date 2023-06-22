@@ -30,5 +30,6 @@ export class OffersService {
       updateOn: 'blur',
       validators: [Validators.required],
     }),
+    image: new FormControl<null | Blob>(null, [Validators.required]),
   });
 }

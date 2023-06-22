@@ -4,6 +4,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { SharedModule } from '../../../shared/shared.module';
 import { PlaceLocation } from '../../location.model';
+import base64toBlob from '../../../utils/base64toBlob';
 
 @Component({
   imports: [IonicModule, ReactiveFormsModule, NgIf, SharedModule],
@@ -21,11 +22,22 @@ export class OfferFormComponent implements OnInit {
     dateFrom: FormControl<null | string>;
     dateTo: FormControl<null | string>;
     location: FormControl<null | PlaceLocation>;
+    image: FormControl<any>;
   }>;
   constructor() {}
 
   ngOnInit() {}
-  onImagePicked(image: string) {}
+
+  onImagePicked(image: string) {
+    try {
+      const separator = image.search(',') + 1;
+      const newImage = image.substring(separator);
+      const fileImage = base64toBlob(newImage, 'image/jpeg');
+      this.form.patchValue({ image: fileImage });
+    } catch (err) {
+      //handle error
+    }
+  }
   onLocationPicked(location: PlaceLocation) {
     this.form.patchValue({ location });
   }

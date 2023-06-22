@@ -4,8 +4,8 @@ import { PlacesService } from '../../places.service';
 import { Place } from '../../place';
 import { AuthService } from '../../../auth/auth.service';
 import { NavController } from '@ionic/angular';
-const imageURL =
-  'https://www.parisperfect.com/blog/wp-content/uploads/2016/02/The-6-Most-Romantic-Paris-Apartments-for-Lovebirds-by-Paris-Perfect1.jpg';
+import { take } from 'rxjs';
+
 @Component({
   selector: 'app-new-offer',
   templateUrl: './new-offer.page.html',
@@ -31,14 +31,24 @@ export class NewOfferPage implements OnInit {
       null,
       this.form.value.title ?? '',
       this.form.value.description ?? '',
-      imageURL,
+      '',
       this.form.value.price ?? 0,
       new Date(this.form.value.dateFrom ?? new Date().toString()),
       new Date(this.form.value.dateTo ?? new Date().toString()),
       this.authService.userId,
       this.form.value.location
     );
-    this.placesService.addPlace(place);
-    this.navController.pop();
+    if (this.form.value.image) {
+      this.placesService
+        .uploadImage(this.form.value.image)
+        .pipe(take(1))
+        .subscribe({
+          next: (uploadResponse) => {
+            place.imageURL = uploadResponse.imageUrl;
+            this.placesService.addPlace(place);
+            this.navController.pop();
+          },
+        });
+    }
   }
 }

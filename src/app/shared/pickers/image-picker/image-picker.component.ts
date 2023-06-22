@@ -9,24 +9,28 @@ import { Capacitor } from '@capacitor/core';
 export class ImagePickerComponent implements OnInit {
   @Output() imagePick = new EventEmitter<string>();
   selectedImage?: string;
+  usePicker = false;
   constructor() {}
 
   ngOnInit() {}
   onPickImage() {
     if (!Capacitor.isPluginAvailable('Camera')) {
-      console.log('not available');
       return;
     } else {
       Camera.getPhoto({
         quality: 50,
+        source: CameraSource.Prompt,
+        correctOrientation: true,
+        width: 600,
         resultType: CameraResultType.DataUrl,
       })
-
         .then((image) => {
           this.selectedImage = image.dataUrl;
           this.imagePick.emit(image.dataUrl);
         })
-        .catch(console.log);
+        .catch(() => {
+          //handle error
+        });
     }
   }
 }

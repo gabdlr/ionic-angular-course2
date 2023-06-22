@@ -124,4 +124,13 @@ export class PlacesService {
         .subscribe();
     });
   }
+
+  uploadImage(image: Blob) {
+    const uploadData = new FormData();
+    uploadData.append('image', image);
+    return this.httpClient.post<{ imageUrl: string; imagePath: string }>(
+      'https://us-central1-ng-ionic-app.cloudfunctions.net/storeImage',
+      uploadData
+    );
+  }
 }

@@ -71,12 +71,11 @@
             >Switch to {{ isLoginMode ? 'signup' : 'login'}}</ion-button
           >
           <ion-button
-            (click)="onLogin()"
             [disabled]="f.invalid"
             color="primary"
             expand="block"
             type="submit"
-            >Login</ion-button
+            >{{ (isLoginMode ? 'login' : 'signup')}}</ion-button
           >
         </ion-col>
       </ion-row>

@@ -41,7 +41,7 @@ export class PlaceDetailPage implements OnInit {
     private navController: NavController,
     private placesService: PlacesService
   ) {
-    this.userId = this.authService.userId;
+    this.userId = this.authService.userId!;
   }
 
   ngOnInit() {

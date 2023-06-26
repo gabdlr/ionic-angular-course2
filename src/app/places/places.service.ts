@@ -5,6 +5,7 @@ import { LoadingController } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { PlaceLocation } from './location.model';
+import { AuthService } from '../auth/auth.service';
 interface PlaceDTO {
   title: string;
   description: string;
@@ -21,6 +22,7 @@ interface PlaceDTO {
 export class PlacesService {
   private _places = new BehaviorSubject<Place[]>([]);
   constructor(
+    private AuthService: AuthService,
     private httpClient: HttpClient,
     private loadingController: LoadingController
   ) {}
@@ -130,7 +132,8 @@ export class PlacesService {
     uploadData.append('image', image);
     return this.httpClient.post<{ imageUrl: string; imagePath: string }>(
       'https://us-central1-ng-ionic-app.cloudfunctions.net/storeImage',
-      uploadData
+      uploadData,
+      { headers: { Authorization: `Bearer ${this.AuthService.token}` } }
     );
   }
 }

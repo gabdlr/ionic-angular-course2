@@ -3,9 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
-  mapsAPIKey: 'AIzaSyB2wlphSvhutDXtPLdTEYGTxBNOOTfXMBQ',
   firebaseURL: 'https://ng-ionic-app-default-rtdb.firebaseio.com/',
+  firebaseWebAPIKey: 'AIzaSyA-VNaIixjMh8ZhHS1JlXJWHwK53lKw7qU',
+  mapsAPIKey: 'AIzaSyB2wlphSvhutDXtPLdTEYGTxBNOOTfXMBQ',
+  production: false,
 };
 
 /*

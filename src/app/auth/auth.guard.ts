@@ -1,12 +1,16 @@
 import { inject } from '@angular/core';
 import { AuthService } from './auth.service';
-import { NavController } from '@ionic/angular';
+import { of, switchMap, take } from 'rxjs';
+
 export const AuthGuard = () => {
   const auth = inject(AuthService);
-  const router = inject(NavController);
-  if (!auth.userIsAuthenticated) {
-    router.navigateBack(['/', 'auth']);
-    return false;
-  }
-  return auth.userIsAuthenticated;
+  return auth.userIsAuthenticated.pipe(
+    take(1),
+    switchMap((isAuthenticated) => {
+      if (!isAuthenticated) {
+        return auth.autoLogin();
+      }
+      return of(isAuthenticated);
+    })
+  );
 };

@@ -52,7 +52,7 @@ export class BookingsService {
         place.id,
         place.imageURL,
         place.title,
-        this.authService.userId
+        this.authService.userId!
       );
       this.loadingController.create({ message: 'Booking...' }).then((el) => {
         el.present();
